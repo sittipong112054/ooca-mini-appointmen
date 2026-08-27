@@ -26,18 +26,24 @@ export default function Home() {
   const [editName, setEditName] = useState("");
   const [editDate, setEditDate] = useState("");
 
-  const fetchAppointments = () => {
-    fetch("https://my-appointment-api.onrender.com/appointments")
-      .then((res) => res.json())
-      .then((data) => {
+const fetchAppointments = () => {
+  fetch("https://my-appointment-api.onrender.com/appointments")
+    .then((res) => res.json())
+    .then((data) => {
+      // เช็กว่าเป็น Array ก่อนเสมอ ถ้าไม่ใช่ให้ใส่ [] เปล่าๆ ป้องกัน e.filter is not a function
+      if (Array.isArray(data)) {
         setAppointments(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch error:", err);
-        setLoading(false);
-      });
-  };
+      } else {
+        setAppointments([]);
+      }
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error("Fetch error:", err);
+      setAppointments([]);
+      setLoading(false);
+    });
+};
 
   useEffect(() => {
     fetchAppointments();
