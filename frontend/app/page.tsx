@@ -13,15 +13,12 @@ export default function Home() {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // State สำหรับฟอร์มสร้างใหม่
   const [patientName, setPatientName] = useState("");
   const [appointmentAt, setAppointmentAt] = useState("");
 
-  // State สำหรับ Search & Filter
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
-  // State สำหรับ Modal แก้ไขข้อมูล
   const [editingItem, setEditingItem] = useState<Appointment | null>(null);
   const [editName, setEditName] = useState("");
   const [editDate, setEditDate] = useState("");
@@ -30,7 +27,6 @@ const fetchAppointments = () => {
   fetch("https://my-appointment-api.onrender.com/appointments")
     .then((res) => res.json())
     .then((data) => {
-      // เช็กว่าเป็น Array ก่อนเสมอ ถ้าไม่ใช่ให้ใส่ [] เปล่าๆ ป้องกัน e.filter is not a function
       if (Array.isArray(data)){
         setAppointments(data);
       } else {
@@ -128,12 +124,10 @@ const fetchAppointments = () => {
     }
   };
 
-  // คณะคำนวณสถิติ
   const totalCount = appointments.length;
   const pendingCount = appointments.filter((a) => !a.status || a.status === "pending").length;
   const completedCount = appointments.filter((a) => a.status === "completed").length;
 
-  // Filter Logic
   const filteredAppointments = appointments.filter((item) => {
     const matchesSearch = item.patientName
       .toLowerCase()
@@ -146,7 +140,6 @@ const fetchAppointments = () => {
     <main className="min-h-screen bg-gray-950 text-gray-100 p-4 md:p-8">
       <div className="max-w-4xl mx-auto space-y-8">
         
-        {/* Header */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-gray-800 pb-6">
           <div>
             <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500">
@@ -158,7 +151,6 @@ const fetchAppointments = () => {
           </div>
         </div>
 
-        {/* Stats Bar */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div className="p-4 rounded-xl bg-gray-900/60 border border-gray-800 backdrop-blur-sm">
             <span className="text-xs font-medium text-gray-400 uppercase tracking-wider">นัดหมายทั้งหมด</span>
@@ -174,7 +166,6 @@ const fetchAppointments = () => {
           </div>
         </div>
 
-        {/* Form Create */}
         <form onSubmit={handleSubmit} className="p-6 rounded-2xl bg-gray-900/80 border border-gray-800 shadow-xl space-y-5">
           <h2 className="text-lg font-semibold text-gray-200 flex items-center gap-2">
             <span>📝</span> เพิ่มรายการนัดหมายใหม่
@@ -208,7 +199,6 @@ const fetchAppointments = () => {
           </button>
         </form>
 
-        {/* Filter Section */}
         <div className="p-4 rounded-xl bg-gray-900/40 border border-gray-800/80 flex flex-col sm:flex-row gap-3 items-center justify-between">
           <div className="relative w-full sm:w-auto flex-1">
             <input
@@ -231,7 +221,6 @@ const fetchAppointments = () => {
           </select>
         </div>
 
-        {/* List Section */}
         <div className="space-y-4">
           <div className="flex justify-between items-center px-1">
             <h2 className="text-lg font-semibold text-gray-200">รายการนัดหมาย</h2>
@@ -277,9 +266,7 @@ const fetchAppointments = () => {
                     </p>
                   </div>
 
-                  {/* Actions */}
                   <div className="flex items-center gap-1.5 self-end sm:self-center">
-                        {/* ปุ่มแก้ไข */}
                         <button
                           onClick={() => handleOpenEdit(item)}
                           className="px-3 py-1.5 text-xs font-medium text-gray-300 hover:text-white bg-gray-800 hover:bg-gray-700 hover:shadow-md cursor-pointer active:scale-95 rounded-lg transition-all"
@@ -287,7 +274,6 @@ const fetchAppointments = () => {
                           ✏️ แก้ไข
                         </button>
 
-                        {/* แสดงปุ่ม "เสร็จสิ้น" เฉพาะเมื่อสถานะยังไม่เสร็จสิ้น */}
                         {item.status !== "completed" && (
                           <button
                             onClick={() => handleUpdateStatus(item.id, "completed")}
@@ -297,7 +283,6 @@ const fetchAppointments = () => {
                           </button>
                         )}
 
-                        {/* แสดงปุ่ม "ยกเลิก" เฉพาะเมื่อสถานะยังไม่ยกเลิก */}
                         {item.status !== "cancelled" && (
                           <button
                             onClick={() => handleUpdateStatus(item.id, "cancelled")}
@@ -307,7 +292,6 @@ const fetchAppointments = () => {
                           </button>
                         )}
 
-                        {/* ปุ่มลบ */}
                         <button
                           onClick={() => handleDelete(item.id)}
                           className="px-3 py-1.5 text-xs font-medium text-rose-400 hover:text-white bg-rose-950/50 hover:bg-rose-600 border border-rose-800/60 hover:border-rose-500 hover:shadow-lg hover:shadow-rose-900/40 cursor-pointer active:scale-95 rounded-lg transition-all"
@@ -321,7 +305,6 @@ const fetchAppointments = () => {
           )}
         </div>
 
-        {/* Edit Modal */}
         {editingItem && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50">
             <div className="bg-gray-900 border border-gray-800 p-6 rounded-2xl w-full max-w-md space-y-4 shadow-2xl">

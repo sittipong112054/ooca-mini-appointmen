@@ -2,17 +2,14 @@ import type { Request, Response } from "express";
 import { pool } from "./db.js";
 import type { RowDataPacket, ResultSetHeader } from "mysql2/promise";
 
-// 1. POST /appointments - สร้างรายการนัดหมายใหม่
 export const createAppointment = async (req: Request, res: Response) => {
   try {
     const { patientName, appointmentAt } = req.body;
 
-    // Validation: patientName ห้ามว่าง
     if (!patientName || patientName.trim() === "") {
       return res.status(400).json({ error: "patientName cannot be empty" });
     }
 
-    // Validation: appointmentAt ต้องเป็นเวลาในอนาคต
     const appointmentDate = new Date(appointmentAt);
     if (isNaN(appointmentDate.getTime()) || appointmentDate <= new Date()) {
       return res
@@ -20,7 +17,6 @@ export const createAppointment = async (req: Request, res: Response) => {
         .json({ error: "appointmentAt must be in the future" });
     }
 
-    // Business rule: ห้ามนัดซ้ำในสล็อตเวลา 30 นาที (ยิง Status 409 Conflict)
     const startTime = new Date(appointmentDate.getTime() - 30 * 60 * 1000);
     const endTime = new Date(appointmentDate.getTime() + 30 * 60 * 1000);
 
@@ -37,7 +33,6 @@ export const createAppointment = async (req: Request, res: Response) => {
         .json({ error: "Appointment time overlaps with an existing slot" });
     }
 
-    // บันทึกลง Database
     const [result] = await pool.query<ResultSetHeader>(
       `INSERT INTO appointments (patientName, appointmentAt, status) VALUES (?, ?, 'pending')`,
       [patientName, appointmentDate],
@@ -55,7 +50,6 @@ export const createAppointment = async (req: Request, res: Response) => {
   }
 };
 
-// 2. GET /appointments - ดึงรายการทั้งหมด (รองรับ query ?status=)
 export const getAppointments = async (req: Request, res: Response) => {
   try {
     const { status } = req.query;
@@ -77,7 +71,6 @@ export const getAppointments = async (req: Request, res: Response) => {
   }
 };
 
-// 3. PATCH /appointments/:id - อัปเดตสถานะ (pending / confirmed / cancelled)
 export const updateAppointmentStatus = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -104,7 +97,6 @@ export const updateAppointmentStatus = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
-// ลบรายการนัดหมาย
 export const deleteAppointment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -114,7 +106,6 @@ export const deleteAppointment = async (req: Request, res: Response) => {
     res.status(500).json({ error: "ไม่สามารถลบข้อมูลได้" });
   }
 };
-// แก้ไขข้อมูลผู้ป่วย/วันนัดหมาย
 export const updateAppointment = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;

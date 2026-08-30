@@ -16,8 +16,8 @@ Follow these steps to run the application locally on a clean environment.
 
 ### Step 1: Clone the Repository
 ```bash
-git clone https://github.com/sittipong112054/node-expres-mysql.git
-cd node-expres-mysql
+git clone https://github.com/sittipong112054/ooca-mini-appointmen.git
+cd ooca-mini-appointmen
 ```
 
 ---
