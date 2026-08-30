@@ -19,14 +19,14 @@ Follow these steps to run the application locally on a clean environment.
 git clone https://github.com/sittipong112054/node-expres-mysql.git
 cd node-expres-mysql
 
-Step 2: Backend Setup
+ Step 2: Backend Setup
 Navigate to the backend directory:
 
-Bash
+```bash
 cd backend
 Install dependencies:
 
-Bash
+```bash
 npm install
 
 Create a .env file in the backend folder and populate it with your configuration:
