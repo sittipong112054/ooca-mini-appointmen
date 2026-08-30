@@ -7,14 +7,14 @@ export const createAppointment = async (req: Request, res: Response) => {
     const { patientName, appointmentAt } = req.body;
 
     if (!patientName || patientName.trim() === "") {
-      return res.status(400).json({ error: "patientName cannot be empty" });
+      return res.status(400).json({ error: "ชื่อผู้ป่วยห้ามว่าง" });
     }
 
     const appointmentDate = new Date(appointmentAt);
     if (isNaN(appointmentDate.getTime()) || appointmentDate <= new Date()) {
       return res
         .status(400)
-        .json({ error: "appointmentAt must be in the future" });
+        .json({ error: "ไม่สามารถนัดหมายย้อนหลังได้" });
     }
 
     const startTime = new Date(appointmentDate.getTime() - 30 * 60 * 1000);
@@ -30,7 +30,7 @@ export const createAppointment = async (req: Request, res: Response) => {
     if (existing.length > 0) {
       return res
         .status(409)
-        .json({ error: "Appointment time overlaps with an existing slot" });
+        .json({ error: "เวลาในการนัดหมายซ้ำกับช่วงเวลาที่มีอยู่แล้ว" });
     }
 
     const [result] = await pool.query<ResultSetHeader>(
