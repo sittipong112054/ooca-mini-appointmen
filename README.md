@@ -3,6 +3,10 @@
 A full-stack web application for managing medical appointments, built for the ooca Full Stack Developer Intern assessment.
 
 ---
+# 📅 Mini Appointment Management App
+
+> 🌐 **Live Demo:** [https://your-frontend-domain.vercel.app](https://your-frontend-domain.vercel.app)  
+> 🔗 **Backend API Base URL:** [https://my-appointment-api.onrender.com](https://my-appointment-api.onrender.com)
 
 ## 1. Setup and Run Instructions
 
