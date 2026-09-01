@@ -5,7 +5,7 @@ A full-stack web application for managing medical appointments, built for the oo
 ---
 # 📅 Mini Appointment Management App
 
-> 🌐 **Live Demo:** [https://your-frontend-domain.vercel.app](https://your-frontend-domain.vercel.app)  
+> 🌐 **Live Demo:** [https://node-expres-mysql-production.up.railway.app](https://node-expres-mysql-production.up.railway.app)  
 > 🔗 **Backend API Base URL:** [https://my-appointment-api.onrender.com](https://my-appointment-api.onrender.com)
 
 ## 1. Setup and Run Instructions
